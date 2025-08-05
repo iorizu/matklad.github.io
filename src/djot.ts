@@ -2,6 +2,7 @@ import { highlight } from "./highlight.ts";
 import { HtmlString, time_html } from "./templates.tsx";
 
 import { parse as djot_parse } from "@djot/parse.ts";
+import { parseEvents } from "@djot/block.ts";
 import { HTMLRenderer, renderHTML } from "@djot/html.ts";
 import {
   AstNode,
@@ -23,6 +24,15 @@ import {
 
 export function parse(source: string): Doc {
   return djot_parse(source);
+}
+
+function parseEvts(source: string) {
+  const parser = parseEvents(source);
+  const list = [];
+  for (const event of parser) {
+    list.push({ ...event, slice: source.slice(event.startpos, event.endpos + 1) });
+  }
+  console.log(Deno.inspect(list, { breakLength: 120, iterableLimit: 1000 }));
 }
 
 type RenderCtx = {
