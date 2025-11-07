@@ -323,7 +323,7 @@ impl Parser {
     mark
   }
 
-  fn close(  <1>
+  fn close( <1>
     &mut self,
     m: MarkOpened,
     kind: TreeKind, <2>
@@ -479,13 +479,13 @@ fn file(p: &mut Parser) {
 
   while !p.eof() { <2>
     if p.at(FnKeyword) {
-      func(p)
+      func(p);
     } else {
       p.advance_with_error("expected a function"); <3>
     }
   }
 
-  p.close(m, File);  <1>
+  p.close(m, File); <1>
 }
 ```
 
@@ -499,7 +499,6 @@ fn file(p: &mut Parser) {
    Otherwise, we consume the token and wrap it into an error node.
 
 Lets parse functions now:
-
 
 ```rust
 // Fn = 'fn' 'name' ParamList ('->' TypeExpr)? Block
@@ -686,7 +685,6 @@ Again, for `stmt_expr`, we push "must consume a token" invariant onto `expr`.
 Expressions are tricky.
 They always are.
 For starters, let's handle just the clearly-delimited cases, like literals and parenthesis:
-
 
 ```rust
 fn expr(p: &mut Parser) {
@@ -914,7 +912,7 @@ fn right_binds_tighter( <1>
   }
 
   let Some(right_tightness) = tightness(right) else { <3>
-    return false
+    return false;
   };
   let Some(left_tightness) = tightness(left) else {
     assert!(left == Eof);
